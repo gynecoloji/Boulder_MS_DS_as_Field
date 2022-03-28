@@ -1,0 +1,73 @@
+---
+title: "NYPD_Shooting_Historical"
+author: "Ji"
+date: "2022/3/13"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Import and Clean data
+
+Firstly, we import the data and check whether there exists errors, inconsistencies, missing data or irrelevant values.
+
+```{r import data}
+df = read.csv("NYPD_Shooting_Incident_Data__Historic_.csv")
+```
+
+## Analysis of data
+
+After importing the data, we plan to analyze the data to check the distribution of age groups  and genders (F: female, M: male, U: unknown) amongst victims and to find the correlation between races of victims and locations (BORO).
+
+```{r data visualization}
+library(ggplot2)
+library(ggpubr)
+
+ggplot(df, aes(x=VIC_AGE_GROUP, fill = VIC_AGE_GROUP))+
+  geom_bar(stat = "count")+
+  theme_bw()+
+  xlab("Age Group")+
+  ylab("Frequency")+
+  guides(fill=guide_legend(title="Age Groups of Victims"))
+
+ggplot(df, aes(x=VIC_SEX, fill = VIC_SEX))+
+  geom_bar(stat = "count")+
+  theme_bw()+
+  xlab("Genders")+
+  ylab("Frequency")+
+  guides(fill=guide_legend(title="Genders of Victims"))
+
+ggplot(df, aes(x=VIC_RACE, fill = VIC_RACE))+
+  geom_bar(stat = "count")+
+  theme_bw()+
+  xlab("Race")+
+  ylab("Frequency")+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())+
+  guides(fill=guide_legend(title="Races of Victims"))
+
+ggplot(df, aes(x=BORO, fill = VIC_RACE))+
+  geom_bar(position = "fill")+
+  theme_bw()+
+  xlab("Location")+
+  ylab("Frequency")+
+  guides(fill=guide_legend(title="Races of Victims"))+theme(axis.text.x = element_text(angle = 45, hjust=1))
+
+
+```
+We can clearly find that more black victims are identified in Brooklyn and Queen regions compared to others. Interestingly, male is the most vulnerable gender and so is 25-44 age group. 
+
+
+There may exist bias when it comes to occurring time for the shooting. It is very difficult for people to still remember it in danger. Moreover, unknown information will also have effects on final conclusions.
+
+
+## Packages
+
+```{r session, echo=FALSE}
+sessionInfo()
+```
+
